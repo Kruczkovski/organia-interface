@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="h-full">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OrganIA – Dashboard</title>
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            bg: '#0d0d0d',
+            surface: '#121212',
+            accent: '#7c5cff',
+          },
+          fontFamily: { inter: ['Inter', 'sans-serif'] },
+        },
+      },
+    };
+  </script>
+  <link rel="stylesheet" href="/src/style.css">
+</head>
+<body class="h-full font-inter bg-bg text-white">
+  <div class="h-full flex rounded-xl overflow-hidden">
+    <!-- Sidebar -->
+    <aside class="w-56 shrink-0 bg-surface border-r border-[#1d1d1d] flex flex-col p-5">
+      <div class="flex items-center gap-2 mb-7">
+        <img src="/organia.jpeg" alt="OrganIA logo" class="h-6 w-6 object-contain" />
+        <span class="text-xl font-bold leading-none">OrganIA</span>
+      </div>
+      <select class="w-full h-9 rounded-md bg-bg border border-[#1e1e1e] px-2 text-sm focus:outline-none focus:ring-1 focus:ring-accent mb-6">
+        <option>Equipe Matrix</option>
+      </select>
+      <nav class="flex flex-col gap-3 text-sm">
+        <a href="#" class="flex items-center gap-3 text-[#b2b2b2] hover:text-white">Agentes</a>
+        <a href="#" class="flex items-center gap-3 text-[#b2b2b2] hover:text-white">Conhecimento</a>
+        <a href="#" class="flex items-center gap-3 text-[#b2b2b2] hover:text-white">Conversas</a>
+      </nav>
+    </aside>
+
+    <!-- Main -->
+    <main class="flex-1 p-8 overflow-y-auto">
+      <h1 class="text-2xl font-semibold mb-1">Agentes</h1>
+      <p class="text-sm text-[#9e9e9e] mb-6">Gerencie seus agentes para automatizar tarefas de forma inteligente</p>
+
+      <button id="new-agent-btn" class="flex items-center gap-2 mb-6 px-4 h-11 rounded-md border border-[#2a2a2a] bg-surface hover:bg-[#1a1a1a]">
+        <span class="flex items-center justify-center h-6 w-6 rounded bg-accent text-white text-xs">+</span>
+        <span>Novo agente</span>
+      </button>
+
+      <!-- Cards grid -->
+      <div id="agents-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Exemplo de card -->
+        <div class="agent-card cursor-pointer p-5 bg-surface border border-[#1d1d1d] rounded-lg" data-model="GPT 4.1 Mini" data-temp="0.8" data-presence="0" data-frequency="0">
+          <div class="flex items-start justify-between mb-4">
+            <div class="flex items-center gap-2">
+              <div class="h-6 w-6 rounded-full bg-[#2a2a2a] flex items-center justify-center text-[#c9c9c9] text-xs">⚙</div>
+              <h2 class="text-base font-semibold">SDR</h2>
+            </div>
+            <div class="flex items-center gap-3 text-[#8a8a8a] text-sm">
+              💬 ⚙
+            </div>
+          </div>
+          <p class="text-sm text-[#b2b2b2] mb-4">Especialista em encontrar e qualificar novos leads para o negócio.</p>
+          <div class="flex items-center justify-end text-xs text-[#cccccc]">
+            <div>GPT 4o</div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Modal -->
+  <div id="agent-modal" class="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center hidden">
+    <div class="bg-surface w-full max-w-xl rounded-lg p-8 relative">
+      <button id="close-modal" class="absolute top-3 right-3 text-xl">✕</button>
+      <!-- Tabs -->
+      <div class="flex gap-6 mb-8 border-b border-[#1d1d1d] pb-2">
+        <button class="tab-btn border-b-2 px-2 pb-1 text-sm" data-tab="tech">Tecnologia</button>
+        <button class="tab-btn border-b-2 px-2 pb-1 text-sm text-[#b2b2b2]" data-tab="prompt">Prompt</button>
+        <button class="tab-btn border-b-2 px-2 pb-1 text-sm text-[#b2b2b2]" data-tab="whatsapp">Conectar WhatsApp</button>
+        <button class="tab-btn border-b-2 px-2 pb-1 text-sm text-[#b2b2b2]" data-tab="testar">Testar Agente</button>
+      </div>
+
+      <!-- Conteúdo das tabs -->
+      <div class="tab-content" data-tab-content="tech">
+        <label for="agent-name" class="block text-sm mb-1">Nome do Agente</label>
+        <input id="agent-name" type="text" class="w-full h-10 rounded-md bg-bg border border-[#1e1e1e] px-2 mb-2 text-sm focus:outline-none focus:ring-1 focus:ring-accent" placeholder="Digite o nome do agente" />
+
+        <label for="agent-desc" class="block text-sm mb-1">Descrição</label>
+        <textarea id="agent-desc" class="w-full h-16 rounded-md bg-bg border border-[#1e1e1e] px-2 py-1 mb-4 text-sm resize-none focus:outline-none focus:ring-1 focus:ring-accent" placeholder="Descreva o propósito do agente"></textarea>
+
+        <label class="block text-sm mb-1">Modelo</label>
+        <select id="model-select" class="w-full h-10 rounded-md bg-bg border border-[#1e1e1e] px-2 mb-4 text-sm">
+          <option>GPT 4o</option>
+          <option>GPT 4 Turbo</option>
+          <option>GPT 4.1 Mini</option>
+        </select>
+
+        <label class="block text-sm mb-1">Temperatura <span id="temp-value" class="ml-1 text-xs text-[#9e9e9e]">0.5</span></label>
+        <input id="temp-slider" type="range" min="0" max="1" step="0.1" value="0.5" class="w-full mb-6 accent-accent" />
+
+        <label class="block text-sm mb-1">Presence Penalty <span id="presence-value" class="ml-1 text-xs text-[#9e9e9e]">0</span></label>
+        <input id="presence-slider" type="range" min="0" max="1" step="0.1" value="0" class="w-full mb-6 accent-accent" />
+
+        <label class="block text-sm mb-1">Frequency Penalty <span id="freq-value" class="ml-1 text-xs text-[#9e9e9e]">0</span></label>
+        <input id="freq-slider" type="range" min="0" max="1" step="0.1" value="0" class="w-full mb-6 accent-accent" />
+
+        <div class="flex justify-end gap-4 mt-6">
+          <button id="cancel-modal" class="px-4 py-2 text-sm bg-[#1d1d1d] rounded-md">Cancelar</button>
+          <button class="px-4 py-2 text-sm bg-accent rounded-md">Salvar</button>
+        </div>
+      </div>
+
+      <div class="tab-content hidden" data-tab-content="prompt">
+        <label for="prompt-input" class="block text-sm mb-2">Prompt do Agente</label>
+        <textarea id="prompt-input" class="w-full h-48 bg-bg border border-[#1e1e1e] rounded-md p-3 text-sm resize-none focus:outline-none focus:ring-1 focus:ring-accent" placeholder="Descreva o comportamento, as instruções e as restrições do seu agente aqui..."></textarea>
+        <div class="flex justify-end gap-4 mt-6">
+          <button class="px-4 py-2 text-sm bg-[#1d1d1d] rounded-md">Cancelar</button>
+          <button class="px-4 py-2 text-sm bg-accent rounded-md">Salvar</button>
+        </div>
+      </div>
+
+      <div class="tab-content hidden" data-tab-content="whatsapp">
+        <div class="flex items-center justify-center h-48">
+          <button class="bg-accent text-white px-6 py-2 rounded-md text-sm font-semibold hover:bg-opacity-90 transition-colors">Gerar QR Code</button>
+        </div>
+      </div>
+
+      <div class="tab-content hidden" data-tab-content="testar">
+        <div class="flex flex-col h-96 bg-bg border border-[#1e1e1e] rounded-lg">
+          <div class="p-3 font-semibold text-sm border-b border-[#1e1e1e]">
+            Chat de Teste
+          </div>
+          <div id="chat-messages" class="flex-1 p-4 space-y-4 overflow-y-auto">
+            <!-- As mensagens aparecerão aqui -->
+          </div>
+          <div class="p-2 border-t border-[#1e1e1e]">
+            <div class="flex items-center gap-2">
+              <input id="chat-input" type="text" placeholder="Digite sua mensagem..." class="flex-1 bg-bg border border-[#2a2a2a] rounded-md p-2 text-sm focus:outline-none focus:ring-1 focus:ring-accent" />
+              <button id="send-btn" class="h-9 w-9 flex items-center justify-center bg-accent rounded-md text-white shrink-0">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                  <path fill-rule="evenodd" d="M8 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L7.5 2.707V14.5a.5.5 0 0 0 .5.5z"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
