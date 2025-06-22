@@ -121,14 +121,27 @@ newBtn.addEventListener('click', () => {
 saveBtns.forEach(btn => {
   btn.addEventListener('click', async (e) => {
     if (!modal.classList.contains('hidden')) {
+      // Validação dos campos
+      const nome = agentName.value.trim();
+      const prompt = promptInput.value.trim();
+
+      if (!nome) {
+        alert('O campo "Nome do Agente" é obrigatório.');
+        return;
+      }
+      if (!prompt || prompt.length < 50) {
+        alert('O campo "Prompt do Agente" deve ter pelo menos 50 caracteres.');
+        return;
+      }
+
       const agenteData = {
-        nome: agentName.value || 'Novo Agente',
+        nome: nome,
         descricao: agentDesc.value || '',
         modelo: modelSel.value,
         temperatura: tempSlide.value,
         presence_penalty: presSlide.value,
         frequency_penalty: freqSlide.value,
-        prompt: promptInput.value || ''
+        prompt: prompt
       };
       if (agenteEditandoId) {
         await atualizarAgente(agenteEditandoId, agenteData);
@@ -226,4 +239,65 @@ chatInput?.addEventListener('keydown', (e) => {
     e.preventDefault(); // Impede que o Enter crie uma nova linha
     handleSendMessage();
   }
-}); 
+});
+
+// Seletores dos novos botões/modais
+const deleteBtn = document.getElementById('delete-agent');
+const confirmDeleteModal = document.getElementById('confirm-delete-modal');
+const cancelDeleteBtn = document.getElementById('cancel-delete');
+const confirmDeleteBtn = document.getElementById('confirm-delete');
+
+// Abrir modal de confirmação
+if (deleteBtn) {
+  deleteBtn.addEventListener('click', () => {
+    confirmDeleteModal.classList.remove('hidden');
+  });
+}
+
+// Cancelar exclusão
+if (cancelDeleteBtn) {
+  cancelDeleteBtn.addEventListener('click', () => {
+    confirmDeleteModal.classList.add('hidden');
+  });
+}
+
+// Confirmar exclusão
+if (confirmDeleteBtn) {
+  confirmDeleteBtn.addEventListener('click', async () => {
+    if (agenteEditandoId) {
+      // Tente deletar e capture o erro
+      const { error } = await supabase.from('agentes').delete().eq('id', agenteEditandoId);
+      if (error) {
+        alert('Erro ao excluir agente: ' + error.message);
+        console.error('Erro ao excluir:', error);
+      } else {
+        // Atualiza a lista de agentes
+        const agentes = await buscarAgentes();
+        renderAgentes(agentes);
+        confirmDeleteModal.classList.add('hidden');
+        closeModal();
+      }
+    } else {
+      alert('ID do agente não encontrado!');
+    }
+  });
+}
+
+// Contador de caracteres do prompt
+const promptCharCount = document.getElementById('prompt-char-count');
+if (promptInput && promptCharCount) {
+  const updateCharCount = () => {
+    promptCharCount.textContent = promptInput.value.length;
+  };
+  promptInput.addEventListener('input', updateCharCount);
+  // Atualiza ao abrir o modal
+  updateCharCount();
+}
+
+// Botão de excluir na aba Prompt
+const deleteBtnPrompt = document.getElementById('delete-agent-prompt');
+if (deleteBtnPrompt) {
+  deleteBtnPrompt.addEventListener('click', () => {
+    confirmDeleteModal.classList.remove('hidden');
+  });
+} 

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="h-full">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login - OrganIA</title>
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            bg: '#0d0d0d',
+            surface: '#121212',
+            accent: '#7c5cff',
+            login: '#ff6a3d',
+          },
+          fontFamily: { inter: ['Inter', 'sans-serif'] },
+        },
+      },
+    };
+  </script>
+  <link rel="stylesheet" href="/src/style.css">
+</head>
+<body class="h-full font-inter bg-bg text-white flex items-center justify-center">
+  <div class="w-full max-w-md mx-auto bg-surface rounded-xl shadow-lg p-8 flex flex-col items-center">
+    <img src="/organia.jpeg" alt="OrganIA logo" class="h-12 w-12 mb-4" />
+    <h1 class="text-2xl font-bold mb-2">OrganIA</h1>
+    <form class="w-full flex flex-col gap-4 mt-4">
+      <label class="text-sm font-medium" for="email">E-mail</label>
+      <input id="email" type="email" required placeholder="Digite seu e-mail" class="w-full h-11 rounded-md bg-bg border border-[#1e1e1e] px-3 text-sm focus:outline-none focus:ring-1 focus:ring-accent" />
+      <label class="text-sm font-medium" for="password">Senha</label>
+      <div class="relative w-full">
+        <input id="password" type="password" required placeholder="Digite sua senha" class="w-full h-11 rounded-md bg-bg border border-[#1e1e1e] px-3 text-sm focus:outline-none focus:ring-1 focus:ring-accent pr-10" />
+        <button type="button" id="toggle-password" tabindex="-1" class="absolute right-3 top-1/2 -translate-y-1/2 text-[#b2b2b2] hover:text-accent focus:outline-none">
+          <svg id="eye-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
+        </button>
+      </div>
+      <button type="submit" class="w-full h-11 rounded-md bg-login text-white font-semibold text-base mt-2 hover:bg-orange-600 transition-colors">Fazer login</button>
+    </form>
+    <div class="flex items-center w-full my-6">
+      <div class="flex-1 h-px bg-[#232323]"></div>
+      <span class="mx-3 text-xs text-[#b2b2b2]">Ou continue com</span>
+      <div class="flex-1 h-px bg-[#232323]"></div>
+    </div>
+    <div class="w-full flex flex-col gap-3">
+      <button class="w-full h-11 rounded-md bg-white text-[#222] font-semibold flex items-center justify-center gap-2 border border-[#e5e5e5] hover:bg-gray-100 transition-colors">
+        <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" class="h-5 w-5" />
+        Entrar com Google
+      </button>
+      <button class="w-full h-11 rounded-md bg-[#1877f2] text-white font-semibold flex items-center justify-center gap-2 hover:bg-[#145db2] transition-colors">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-5 w-5"><path d="M22.675 0h-21.35C.595 0 0 .592 0 1.326v21.348C0 23.408.595 24 1.325 24h11.495v-9.294H9.692v-3.622h3.128V8.413c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.797.143v3.24l-1.918.001c-1.504 0-1.797.715-1.797 1.763v2.313h3.587l-.467 3.622h-3.12V24h6.116C23.406 24 24 23.408 24 22.674V1.326C24 .592 23.406 0 22.675 0"/></svg>
+        Entrar com Facebook
+      </button>
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm"></script>
+  <script>
+    // Configuração do Supabase
+    const supabaseUrl = 'https://nqbixkwmguvyzhukcxoq.supabase.co';
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5xYml4a3dtZ3V2eXpodWtjeG9xIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTA1MzAzMDQsImV4cCI6MjA2NjEwNjMwNH0.fOV_TwcD3gJPCDFbS-rqi9AyI9JarU7gogz2T1dsDj8';
+    const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+
+    // Mostrar/ocultar senha
+    const passwordInput = document.getElementById('password');
+    const togglePassword = document.getElementById('toggle-password');
+    const eyeIcon = document.getElementById('eye-icon');
+    let showing = false;
+    togglePassword?.addEventListener('click', () => {
+      showing = !showing;
+      passwordInput.type = showing ? 'text' : 'password';
+      eyeIcon.innerHTML = showing
+        ? '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.542-7a9.956 9.956 0 012.293-3.95m3.249-2.568A9.956 9.956 0 0112 5c4.478 0 8.268 2.943 9.542 7a9.965 9.965 0 01-4.293 5.032M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3l18 18" />'
+        : '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268-2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />';
+    });
+
+    // Lógica de login
+    const form = document.querySelector('form');
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+      const { error } = await supabase.auth.signInWithPassword({ email, password });
+      if (error) {
+        alert('E-mail ou senha inválidos!');
+      } else {
+        window.location.href = '/index.html';
+      }
+    });
+  </script>
+</body>
+</html> 
