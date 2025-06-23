@@ -300,4 +300,22 @@ if (deleteBtnPrompt) {
   deleteBtnPrompt.addEventListener('click', () => {
     confirmDeleteModal.classList.remove('hidden');
   });
-} 
+}
+
+// Lógica de login
+const form = document.querySelector('form');
+const loginError = document.getElementById('login-error');
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  loginError.classList.add('hidden');
+  loginError.textContent = '';
+  const email = document.getElementById('email').value.trim();
+  const password = document.getElementById('password').value;
+  const { error } = await supabase.auth.signInWithPassword({ email, password });
+  if (error) {
+    loginError.textContent = error.message;
+    loginError.classList.remove('hidden');
+  } else {
+    window.location.href = '/index.html';
+  }
+}); 

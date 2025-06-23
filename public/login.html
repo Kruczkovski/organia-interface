@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OrganIA – Login</title>
+
+  <!-- Tailwind CDN (funciona para protótipo) -->
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+</head>
+
+<body class="h-screen flex items-center justify-center bg-gray-900 text-white font-sans">
+
+  <!-- CARD -->
+  <div class="w-full max-w-md mx-auto bg-gray-800 rounded-xl shadow-lg p-8 flex flex-col items-center">
+    <img src="/organia.jpeg" alt="OrganIA logo" class="h-12 w-12 mb-5" />
+    <h1 class="text-2xl font-bold mb-4">OrganIA</h1>
+
+    <div id="login-error" class="text-red-400 text-sm mb-3 hidden text-center"></div>
+
+    <form class="w-full flex flex-col gap-4">
+      <label class="text-sm font-medium">E-mail
+        <input id="email" type="email" required
+               class="mt-1 block w-full h-11 px-3 rounded bg-gray-700 border border-gray-600
+                      focus:outline-none focus:ring-1 focus:ring-orange-500" />
+      </label>
+
+      <label class="text-sm font-medium">Senha
+        <div class="relative mt-1">
+          <input id="password" type="password" autocomplete="current-password" required
+                 class="block w-full h-11 px-3 pr-10 rounded bg-gray-700 border border-gray-600
+                        focus:outline-none focus:ring-1 focus:ring-orange-500" />
+          <button type="button" id="toggle-password"
+                  class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-300 hover:text-orange-400">
+            <!-- olho -->
+            <svg id="eye-icon" xmlns="http://www.w3.org/2000/svg" fill="none"
+                 viewBox="0 0 24 24" stroke="currentColor" class="w-5 h-5">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+            </svg>
+          </button>
+        </div>
+      </label>
+
+      <button type="submit"
+              class="h-11 rounded bg-orange-600 hover:bg-orange-700 transition font-semibold">
+        Fazer login
+      </button>
+    </form>
+
+    <div class="flex items-center w-full my-6">
+      <div class="flex-1 h-px bg-gray-700"></div>
+      <span class="mx-3 text-xs text-gray-400">Ou continue com</span>
+      <div class="flex-1 h-px bg-gray-700"></div>
+    </div>
+
+    <div class="w-full flex flex-col gap-3">
+      <button class="h-11 rounded bg-white text-gray-800 flex items-center justify-center gap-2
+                     border border-gray-300 hover:bg-gray-100 transition">
+        <img src="https://www.svgrepo.com/show/475656/google-color.svg" class="h-5 w-5" alt="Google">
+        Google
+      </button>
+      <button class="h-11 rounded bg-blue-600 text-white flex items-center justify-center gap-2
+                     hover:bg-blue-700 transition">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" class="h-5 w-5">
+          <path d="M22.675 0h-21.35C.595 0 0 .592 0 1.326v21.348C0 23.408.595 24 1.325 24h11.495v-9.294H9.692v-3.622h3.128V8.413c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.797.143v3.24l-1.918.001c-1.504 0-1.797 0.715-1.797 1.763v2.313h3.587l-.467 3.622h-3.12V24h6.116C23.406 24 24 23.408 24 22.674V1.326C24 .592 23.406 0 22.675 0"/>
+        </svg>
+        Facebook
+      </button>
+    </div>
+  </div>
+
+  <!-- JavaScript externo que passa pelo Vite -->
+  <script type="module" src="/src/login.js"></script>
+</body>
+</html>
